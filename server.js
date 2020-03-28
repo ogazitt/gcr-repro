@@ -46,10 +46,26 @@ app.use(bodyParser.urlencoded({
 // Get metadata API endpoint
 app.get('/', function(req, res){
   const invoke = async () => {
-    const output = await invokeAction();
+    const output = await invokeAction(); // this takes 20-25 minutes!
     console.log(`output: ${output}`);
+
+    /*
+     * If I uncomment the line below, while commenting out line 69, i.e. if I return the
+     * HTTP response to caller only AFTER awaiting the result of the invokeAction, 
+     * executing the execFile() on the main thread, it takes 15-20 seconds!
+     */
+    //res.status(200).send(output);
   }
+  
+  // invoke the async function defined above
   invoke();
+
+  /* 
+   * If I remove the line below and instead return after awaiting the invokeAction call, 
+   * the operation only takes 15-20 seconds.  But if I return the HTTP response to the caller 
+   * immediately (so I can free up the main thread for more requests), as the code is 
+   * currently written, the invokeAction call takes 20-25 minutes to complete.
+   */
   res.status(200).send("running");
 });
 
