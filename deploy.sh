@@ -7,6 +7,10 @@
 #   creds.json contains the key file from a serviceaccount named omri@$PROJECT.iam.gserviceaccount.com 
 #     has been granted permission to deploy into GCR 
 
+mkdir /tmp/gcr-repro
+cp ./creds.json /tmp/gcr-repro
+cd /tmp/gcr-repro
+
 # set up gcloud authentication
 gcloud auth activate-service-account gcr-repro@$PROJECT.iam.gserviceaccount.com --key-file=creds.json --project=$PROJECT
 
@@ -15,3 +19,6 @@ gcloud --account gcr-repro@$PROJECT.iam.gserviceaccount.com --project $PROJECT r
 
 # revoke the credentials
 gcloud auth revoke gcr-repro@$PROJECT.iam.gserviceaccount.com
+
+cd /
+rm -fr /tmp/gcr-repro

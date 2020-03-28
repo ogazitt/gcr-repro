@@ -47,9 +47,10 @@ app.use(bodyParser.urlencoded({
 app.get('/', function(req, res){
   const invoke = async () => {
     const output = await invokeAction();
-    res.status(200).send(output);
+    console.log(`output: ${output}`);
   }
   invoke();
+  res.status(200).send("running");
 });
 
 // Launch the API Server at PORT, or default port 8080
