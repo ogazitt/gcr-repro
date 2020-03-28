@@ -14,16 +14,15 @@ const execAsync = (cmd, args, options) => {
 
 const invokeAction = async () => {
   try {
-    // construct script name, environment, and full command
     const script = `./deploy.sh`;
-    const env = { ...process.env, SERVICECREDS: serviceCredentials };
+    const start = new Date().toLocaleTimeString();    
+    console.log(`executing command ${script} starting ${start}`);
 
-    console.log(`executing command: ${script}`);
+    // execute the script and await the output
+    const output = await execAsync(script);
 
-    // execute the action and obtain the output
-    const output = await execAsync(script, [], { env: env });
-
-    console.log(`finished executing command: ${script}, returned ${output && output.stdout}`);
+    const end = new Date().toLocaleTimeString();
+    console.log(`finished executing command ${script} at ${end}, returned ${output && output.stdout}`);
 
     return output;
   } catch (error) {
